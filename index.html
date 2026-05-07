@@ -67,19 +67,31 @@
             type="button"
           ></button>
           <h3 class="popup__title">Editar perfil</h3>
-          <form class="popup__form" id="edit-profile-form">
+          <form class="popup__form" id="edit-profile-form" novalidate>
             <input
+              required
+              minlength="2"
+              maxlength="40"
               class="popup__input popup__input_type_name"
               name="name"
               placeholder="Nome"
               type="text"
             />
+            <span class="name-type-error popup-type-error"
+              >Preencha esse acmpo.</span
+            >
             <input
+              required
+              minlength="2"
+              maxlength="200"
               class="popup__input popup__input_type_description"
               name="description"
               placeholder="Sobre mim"
               type="text"
             />
+            <span class="description-type-error popup-type-error"
+              >Preencha esse campo.</span
+            >
             <button class="button popup__button" type="submit">Salvar</button>
           </form>
         </div>
@@ -92,22 +104,34 @@
             type="button"
           ></button>
           <h3 class="popup__title">Novo local</h3>
-          <form class="popup__form" id="new-card-form">
+          <form class="popup__form" id="new-card-form" novalidate>
             <input
+              required
+              minlength="2"
+              maxlength="30"
               class="popup__input popup__input_type_card-name"
               name="place-name"
               placeholder="Título"
               required
               type="text"
             />
+            <span class="place-name-type-error popup-type-error"
+              >Preencha esse campo.</span
+            >
             <input
+              required
               class="popup__input popup__input_type_url"
               name="link"
               placeholder="Link de Imagem"
               required
               type="url"
             />
-            <button class="button popup__button" type="submit">Criar</button>
+            <span class="link-type-error popup-type-error"
+              >Preencha esse campo.</span
+            >
+            <button disabled class="button popup__button" type="submit">
+              Criar
+            </button>
           </form>
         </div>
       </div>
