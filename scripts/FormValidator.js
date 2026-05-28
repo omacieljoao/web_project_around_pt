@@ -1,11 +1,4 @@
-const config = {
-  inputSelector: ".popup__input",
-  submitButtonSelector: ".popup__button",
-  errorClass: ".popup-type-error",
-  activeErrorClass: ".popup-type-error_active",
-};
-
-class FormValidator {
+export default class FormValidator {
   constructor(data, formElement) {
     this._inputSelector = data.inputSelector;
     this._submitButtonSelector = data.submitButtonSelector;
@@ -18,6 +11,7 @@ class FormValidator {
     const errorElement = document.querySelector(`.${input.name}-type-error`);
     errorElement.textContent = message;
     errorElement.classList.add(this._activeErrorClass);
+    console.log(errorElement);
   }
 
   _hideInputError(input) {
@@ -44,7 +38,7 @@ class FormValidator {
   }
 
   _setEventListeners() {
-    const inputs = document.querySelectorAll(this._inputSelector);
+    const inputs = this._formElement.querySelectorAll(this._inputSelector);
     inputs.forEach((input) => {
       input.addEventListener("input", () => {
         this._checkInputValidity(input);
@@ -57,9 +51,3 @@ class FormValidator {
     this._setEventListeners();
   }
 }
-
-const formValidator1 = new FormValidator(config, formElement);
-const formValidator2 = new FormValidator(config, createFormElement);
-
-formValidator1.setEventListeners();
-formValidator2.setEventListeners();

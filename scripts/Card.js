@@ -1,31 +1,6 @@
-const initialCards = [
-  {
-    name: "Vale de Yosemite",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
-  },
-  {
-    name: "Lago Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
-  },
-  {
-    name: "Montanhas Carecas",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
-  },
-  {
-    name: "Latemar",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg",
-  },
-  {
-    name: "Parque Nacional Vanoise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg",
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
-  },
-];
+import { closeModal, openModal } from "./util.js";
 
-class Card {
+export default class Card {
   constructor(data, templateSelector) {
     this._name = data.name;
     this._link = data.link;
@@ -55,6 +30,10 @@ class Card {
       document.querySelector(".popup__image").src = this._link;
       document.querySelector(".popup__caption").textContent = this._name;
     });
+    const closeBtn = imgModal.querySelector(".popup__close");
+    closeBtn.addEventListener("click", () => {
+      closeModal(imgModal);
+    });
   }
 
   _handleDelete() {
@@ -75,9 +54,3 @@ class Card {
     return this.element;
   }
 }
-
-initialCards.forEach(function (item) {
-  const card = new Card(item, "#card-template");
-  const cardElement = card.generateCard();
-  cardsList.prepend(cardElement);
-});
