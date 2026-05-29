@@ -81,8 +81,8 @@ function fillAddForm() {
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  let nameInputValue = nameInput.value;
-  let descriptionInputValue = descriptionInput.value;
+  const nameInputValue = nameInput.value;
+  const descriptionInputValue = descriptionInput.value;
   profileName.textContent = nameInputValue;
   profileDescription.textContent = descriptionInputValue;
   closeModal(editPopup);
@@ -115,21 +115,14 @@ document.querySelectorAll(".popup").forEach((popup) => {
   popup.addEventListener("click", handleCloseClick);
 });
 
-function handleCloseEsc(evt) {
-  if (evt.key === "Escape") {
-    const modal = document.querySelector(".popup_is-opened");
-    closeModal(modal);
-  }
-}
-
-document.addEventListener("keydown", handleCloseEsc);
-
 function handleOpenAddModal(modal) {
   openModal(modal);
   fillAddForm();
+  formValidator2.resetValidation();
 }
 
 function handleOpenEditModal(modal) {
   openModal(modal);
   fillProfileForm();
+  formValidator1.resetValidation();
 }
