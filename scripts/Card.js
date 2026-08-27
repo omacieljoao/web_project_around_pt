@@ -1,10 +1,9 @@
-import { closeModal, openModal } from "./util.js";
-
 export default class Card {
-  constructor(data, templateSelector) {
+  constructor(data, templateSelector, handleCardClick) {
     this._name = data.name;
     this._link = data.link;
     this._templateSelector = templateSelector;
+    this._handleCardClick = handleCardClick;
   }
 
   _getTemplate() {
@@ -23,16 +22,9 @@ export default class Card {
   }
 
   _handleOpenImage() {
-    const imgModal = document.querySelector("#image-popup");
     const image = this.element.querySelector(".card__image");
     image.addEventListener("click", () => {
-      openModal(imgModal);
-      document.querySelector(".popup__image").src = this._link;
-      document.querySelector(".popup__caption").textContent = this._name;
-    });
-    const closeBtn = imgModal.querySelector(".popup__close");
-    closeBtn.addEventListener("click", () => {
-      closeModal(imgModal);
+      this._handleCardClick({ name: this._name, link: this._link });
     });
   }
 
