@@ -2,20 +2,21 @@
   "name": "web_project_around_pt",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "keywords": [],
+  "homepage": "https://github.com/omacieljoao/web_project_around_pt#readme",
+  "bugs": {
+    "url": "https://github.com/omacieljoao/web_project_around_pt/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/omacieljoao/web_project_around_pt.git"
   },
-  "keywords": [],
-  "author": "",
   "license": "ISC",
+  "author": "",
   "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/omacieljoao/web_project_around_pt/issues"
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "homepage": "https://github.com/omacieljoao/web_project_around_pt#readme"
+  "devDependencies": {}
 }

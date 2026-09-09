@@ -25,10 +25,10 @@ export default class Popup {
     }
   };
 
-  setEventListeners = () => {
+  setEventListeners() {
     this._popup.addEventListener("click", this._handleOverlayClose);
     this._popup
       .querySelector(".popup__close")
       .addEventListener("click", this.close);
-  };
+  }
 }
