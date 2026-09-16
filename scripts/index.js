@@ -4,6 +4,8 @@ import Section from "./Section.js";
 import PopupWithImage from "./PopupWithImage.js";
 import PopupWithForm from "./PopupWithForm.js";
 import UserInfo from "./UserInfo.js";
+import Api from "./Api.js";
+import PopupWithConfirmation from "./PopupWithConfirmation.js";
 
 const initialCards = [
   {
@@ -48,6 +50,9 @@ const descriptionInput = document.querySelector(
   ".popup__input_type_description",
 );
 
+const confirmDelete = new PopupWithConfirmation(".trash-popup");
+confirmDelete.setEventListeners();
+
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",
   jobSelector: ".profile__description",
@@ -69,6 +74,7 @@ function handleCardFormSubmit(data) {
     { name: data["place-name"], link: data.link },
     "#card-template",
     handleCardClick,
+    confirmDelete,
   );
   const cardElement = card.generateCard();
   cardSection.addItem(cardElement);
@@ -88,7 +94,7 @@ function handleCardClick(data) {
 }
 
 function createCard(item) {
-  const card = new Card(item, "#card-template", handleCardClick);
+  const card = new Card(item, "#card-template", handleCardClick, confirmDelete);
   return card.generateCard();
 }
 

@@ -37,10 +37,6 @@ export default class Api {
       }),
     });
   }
-
-  like() {
-    this.isLiked = !this.isLiked;
-  }
 }
 
 const api = new Api({

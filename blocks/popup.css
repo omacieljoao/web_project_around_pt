@@ -60,6 +60,17 @@
   padding: 34px 36px;
 }
 
+.popup__content-trash {
+  max-width: 430px;
+  width: 100%;
+  min-height: 181px;
+  background-color: #fff;
+  border-radius: 10px;
+  position: relative;
+  box-sizing: border-box;
+  padding: 34px 36px;
+}
+
 .popup__form {
   margin-top: 27px;
 }
