@@ -24,18 +24,49 @@ export default class Api {
         name,
         about,
       }),
-    });
+    }).then((res) => res.json());
   }
 
   addNewCard(name, link) {
-    return fetch(`${this.baseUrl}/cards`, {
-      methos: "POST",
+    return fetch(`${this.baseUrl}/cards/`, {
+      method: "POST",
       headers: this.headers,
       body: JSON.stringify({
         name,
         link,
       }),
-    });
+    }).then((res) => res.json());
+  }
+
+  deleteCard(id) {
+    return fetch(`${this.baseUrl}/cards/${id}`, {
+      method: "DELETE",
+      headers: this.headers,
+    }).then((res) => res.json());
+  }
+
+  changeLike(id, isLiked) {
+    if (!isLiked) {
+      return fetch(`${this.baseUrl}/cards/${id}/likes`, {
+        method: "PUT",
+        headers: this.headers,
+      }).then((res) => res.json());
+    } else {
+      return fetch(`${this.baseUrl}/cards/${id}/likes`, {
+        method: "DELETE",
+        headers: this.headers,
+      }).then((res) => res.json());
+    }
+  }
+
+  changeProfilePicture() {
+    return fetch(`${this.baseUrl}/users/me/avatar`, {
+      method: "PATCH",
+      headers: this.headers,
+      body: JSON.stringify({
+        avatar,
+      }),
+    }).then((res) => res.json());
   }
 }
 

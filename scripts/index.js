@@ -50,6 +50,14 @@ const descriptionInput = document.querySelector(
   ".popup__input_type_description",
 );
 
+const api = new Api({
+  baseUrl: "https://around-api.pt-br.tripleten-services.com/v1",
+  headers: {
+    authorization: "5300bed1-0190-4c64-a95d-32ad375e02ee",
+    "Content-Type": "application/json",
+  },
+});
+
 const confirmDelete = new PopupWithConfirmation(".trash-popup");
 confirmDelete.setEventListeners();
 
@@ -75,6 +83,7 @@ function handleCardFormSubmit(data) {
     "#card-template",
     handleCardClick,
     confirmDelete,
+    api,
   );
   const cardElement = card.generateCard();
   cardSection.addItem(cardElement);
@@ -83,6 +92,13 @@ function handleCardFormSubmit(data) {
 
 const newCardPopup = new PopupWithForm(handleCardFormSubmit, "#new-card-popup");
 newCardPopup.setEventListeners();
+
+function handleEditProfileImage() {}
+const changeProfileImage = new PopupWithForm(
+  handleEditProfileImage,
+  "#edit-image-popup",
+);
+changeProfileImage.setEventListeners();
 
 const formValidator1 = new FormValidator(config, formElement);
 const formValidator2 = new FormValidator(config, createFormElement);

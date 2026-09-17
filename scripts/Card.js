@@ -1,10 +1,19 @@
 export default class Card {
-  constructor(data, templateSelector, handleCardClick, deleteConfirmation) {
+  constructor(
+    data,
+    templateSelector,
+    handleCardClick,
+    deleteConfirmation,
+    api,
+  ) {
     this._name = data.name;
     this._link = data.link;
+    this._id = data._id;
+    this._isLiked = data.isLiked;
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
     this.deleteConfirmation = deleteConfirmation;
+    this.api = api;
   }
 
   _getTemplate() {
@@ -34,6 +43,7 @@ export default class Card {
     deleteBtn.addEventListener("click", () => {
       this.deleteConfirmation.open(() => {
         this.element.remove();
+        this.deleteCard(this._id);
       });
     });
   }
