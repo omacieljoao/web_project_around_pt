@@ -1,4 +1,4 @@
-export { openModal, closeModal };
+export { openModal, closeModal, renderLoading };
 
 function handleCloseEsc(evt) {
   if (evt.key === "Escape") {

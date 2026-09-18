@@ -7,33 +7,6 @@ import UserInfo from "./UserInfo.js";
 import Api from "./Api.js";
 import PopupWithConfirmation from "./PopupWithConfirmation.js";
 
-const initialCards = [
-  {
-    name: "Vale de Yosemite",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
-  },
-  {
-    name: "Lago Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
-  },
-  {
-    name: "Montanhas Carecas",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
-  },
-  {
-    name: "Latemar",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg",
-  },
-  {
-    name: "Parque Nacional Vanoise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg",
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
-  },
-];
-
 const config = {
   inputSelector: ".popup__input",
   submitButtonSelector: ".popup__button",
@@ -41,6 +14,9 @@ const config = {
   activeErrorClass: "popup-type-error_active",
 };
 
+const profilePicture = document.querySelector(".profile__image");
+const formChangeImg = document.querySelector("#edit-image-form");
+const profileImg = document.querySelector(".profile__image-edit");
 const editBtn = document.querySelector(".profile__edit-button");
 const addBtn = document.querySelector(".profile__add-button");
 const formElement = document.querySelector("#edit-profile-form");
@@ -70,8 +46,10 @@ const popupWithImage = new PopupWithImage("#image-popup");
 popupWithImage.setEventListeners();
 
 function handleProfileFormSubmit(data) {
-  userInfo.setUserInfo({ name: data.name, job: data.description });
-  editFormPopup.close();
+  api.editProfile(data.name, data.description).then((newData) => {
+    userInfo.setUserInfo({ name: newData.name, job: newData.about });
+    editFormPopup.close();
+  });
 }
 
 const editFormPopup = new PopupWithForm(handleProfileFormSubmit, "#edit-popup");
@@ -93,17 +71,28 @@ function handleCardFormSubmit(data) {
 const newCardPopup = new PopupWithForm(handleCardFormSubmit, "#new-card-popup");
 newCardPopup.setEventListeners();
 
-function handleEditProfileImage() {}
+function handleEditProfileImage(data) {
+  api.changeProfilePicture(data["edit-image"]).then(() => {
+    profilePicture.src = data["edit-image"];
+  });
+  changeProfileImage.close();
+}
 const changeProfileImage = new PopupWithForm(
   handleEditProfileImage,
   "#edit-image-popup",
 );
 changeProfileImage.setEventListeners();
+profileImg.addEventListener("click", () => {
+  changeProfileImage.open();
+});
 
 const formValidator1 = new FormValidator(config, formElement);
 const formValidator2 = new FormValidator(config, createFormElement);
+const formValidator3 = new FormValidator(config, formChangeImg);
+
 formValidator1.setEventListeners();
 formValidator2.setEventListeners();
+formValidator3.setEventListeners();
 
 function handleCardClick(data) {
   popupWithImage.open(data);
@@ -114,14 +103,18 @@ function createCard(item) {
   return card.generateCard();
 }
 
-const cardSection = new Section(
-  {
-    items: initialCards,
-    renderer: createCard,
-  },
-  ".cards__list",
-);
-cardSection.renderer();
+api.getAppInfo().then(([userData, cardsData]) => {
+  userInfo.setUserInfo({ name: userData.name, job: userData.about });
+
+  const cardSection = new Section(
+    {
+      items: cardsData,
+      renderer: createCard,
+    },
+    ".cards__list",
+  );
+  cardSection.renderer();
+});
 
 editBtn.addEventListener("click", () => {
   const { name, job } = userInfo.getUserInfo();

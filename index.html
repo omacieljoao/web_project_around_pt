@@ -163,33 +163,31 @@
             Sim
           </button>
         </div>
-        <div class="popup" id="edit-image-popup">
-          <div class="popup__content popup__content-edit-image">
-            <button
-              aria-label="Fechar pop-up"
-              class="popup__close"
-              type="button"
-            ></button>
-            <h3 class="popup__title">Alterar a foto do perfil</h3>
-            <form class="popup__form" id="edit-image-form" novalidate>
-              <input
-                required
-                minlength="2"
-                maxlength="30"
-                class="popup__input popup__input_type_edit-image"
-                name="picture-url"
-                placeholder="Foto"
-                required
-                type="text"
-              />
-              <span class="edit-image-type-error popup-type-error"
-                >Preencha esse campo.</span
-              >
-              <button disabled class="button popup__button" type="submit">
-                Salvar
-              </button>
-            </form>
-          </div>
+      </div>
+      <div class="popup" id="edit-image-popup">
+        <div class="popup__content popup__content-edit-image">
+          <button
+            aria-label="Fechar pop-up"
+            class="popup__close"
+            type="button"
+          ></button>
+          <h3 class="popup__title">Alterar a foto do perfil</h3>
+          <form class="popup__form" id="edit-image-form" novalidate>
+            <input
+              required
+              minlength="2"
+              class="popup__input popup__input_type_edit-image"
+              name="edit-image"
+              placeholder="Foto"
+              type="url"
+            />
+            <span class="edit-image-type-error popup-type-error"
+              >Preencha esse campo.</span
+            >
+            <button disabled class="button popup__button" type="submit">
+              Salvar
+            </button>
+          </form>
         </div>
       </div>
     </div>

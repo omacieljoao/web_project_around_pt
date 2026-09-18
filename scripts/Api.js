@@ -7,13 +7,25 @@ export default class Api {
   getUserInfo() {
     return fetch(`${this.baseUrl}/users/me`, {
       headers: this.headers,
-    }).then((res) => res.json());
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        return Promise.reject(`Error: ${res.status}`);
+      }
+    });
   }
 
   getInitialCards() {
     return fetch(`${this.baseUrl}/cards`, {
       headers: this.headers,
-    }).then((res) => res.json());
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        return Promise.reject(`Error: ${res.status}`);
+      }
+    });
   }
 
   editProfile(name, about) {
@@ -24,7 +36,17 @@ export default class Api {
         name,
         about,
       }),
-    }).then((res) => res.json());
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject(`Error: ${res.status}`);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   addNewCard(name, link) {
@@ -35,14 +57,34 @@ export default class Api {
         name,
         link,
       }),
-    }).then((res) => res.json());
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject(`Error: ${res.status}`);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   deleteCard(id) {
     return fetch(`${this.baseUrl}/cards/${id}`, {
       method: "DELETE",
       headers: this.headers,
-    }).then((res) => res.json());
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject(`Error: ${res.status}`);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   changeLike(id, isLiked) {
@@ -55,35 +97,41 @@ export default class Api {
       return fetch(`${this.baseUrl}/cards/${id}/likes`, {
         method: "DELETE",
         headers: this.headers,
-      }).then((res) => res.json());
+      })
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            return Promise.reject(`Error: ${res.status}`);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }
 
-  changeProfilePicture() {
+  changeProfilePicture(avatar) {
     return fetch(`${this.baseUrl}/users/me/avatar`, {
       method: "PATCH",
       headers: this.headers,
       body: JSON.stringify({
         avatar,
       }),
-    }).then((res) => res.json());
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject(`Error: ${res.status}`);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  getAppInfo() {
+    return Promise.all([this.getUserInfo(), this.getInitialCards()]);
   }
 }
-
-const api = new Api({
-  baseUrl: "https://around-api.pt-br.tripleten-services.com/v1",
-  headers: {
-    authorization: "5300bed1-0190-4c64-a95d-32ad375e02ee",
-    "Content-Type": "application/json",
-  },
-});
-
-fetch("https://around-api.pt-br.tripleten-services.com/v1/cards/", {
-  headers: {
-    authorization: "5300bed1-0190-4c64-a95d-32ad375e02ee",
-  },
-})
-  .then((res) => res.json())
-  .then((result) => {
-    console.log(result);
-  });
