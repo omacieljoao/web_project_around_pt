@@ -25,6 +25,7 @@ const nameInput = document.querySelector(".popup__input_type_name");
 const descriptionInput = document.querySelector(
   ".popup__input_type_description",
 );
+let cardSection;
 
 const api = new Api({
   baseUrl: "https://around-api.pt-br.tripleten-services.com/v1",
@@ -46,10 +47,15 @@ const popupWithImage = new PopupWithImage("#image-popup");
 popupWithImage.setEventListeners();
 
 function handleProfileFormSubmit(data) {
-  api.editProfile(data.name, data.description).then((newData) => {
-    userInfo.setUserInfo({ name: newData.name, job: newData.about });
-    editFormPopup.close();
-  });
+  api
+    .editProfile(data.name, data.description)
+    .then((newData) => {
+      userInfo.setUserInfo({ name: newData.name, job: newData.about });
+      editFormPopup.close();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 const editFormPopup = new PopupWithForm(handleProfileFormSubmit, "#edit-popup");
@@ -61,20 +67,28 @@ function handleCardFormSubmit(data) {
     "#card-template",
     handleCardClick,
     confirmDelete,
-    api,
+    handleLikeClick,
   );
   const cardElement = card.generateCard();
   cardSection.addItem(cardElement);
   newCardPopup.close();
+  api.addNewCard(card._name, card._link).catch((err) => {
+    console.log(err);
+  });
 }
 
 const newCardPopup = new PopupWithForm(handleCardFormSubmit, "#new-card-popup");
 newCardPopup.setEventListeners();
 
 function handleEditProfileImage(data) {
-  api.changeProfilePicture(data["edit-image"]).then(() => {
-    profilePicture.src = data["edit-image"];
-  });
+  api
+    .changeProfilePicture(data["edit-image"])
+    .then(() => {
+      profilePicture.src = data["edit-image"];
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   changeProfileImage.close();
 }
 const changeProfileImage = new PopupWithForm(
@@ -98,23 +112,51 @@ function handleCardClick(data) {
   popupWithImage.open(data);
 }
 
+function handleLikeClick(id, isLiked) {
+  api.changeLike(id, isLiked).catch((err) => {
+    console.log(err);
+  });
+}
+
+function deleteCard(id) {
+  api.deleteCard(id).catch((err) => {
+    console.log(err);
+  });
+}
+
 function createCard(item) {
-  const card = new Card(item, "#card-template", handleCardClick, confirmDelete);
+  const card = new Card(
+    item,
+    "#card-template",
+    handleCardClick,
+    confirmDelete,
+    handleLikeClick,
+    deleteCard,
+  );
   return card.generateCard();
 }
 
-api.getAppInfo().then(([userData, cardsData]) => {
-  userInfo.setUserInfo({ name: userData.name, job: userData.about });
+api
+  .getAppInfo()
+  .then(([userData, cardsData]) => {
+    userInfo.setUserInfo({
+      name: userData.name,
+      job: userData.about,
+    });
+    profilePicture.src = userData.avatar;
 
-  const cardSection = new Section(
-    {
-      items: cardsData,
-      renderer: createCard,
-    },
-    ".cards__list",
-  );
-  cardSection.renderer();
-});
+    cardSection = new Section(
+      {
+        items: cardsData,
+        renderer: createCard,
+      },
+      ".cards__list",
+    );
+    cardSection.renderer();
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 editBtn.addEventListener("click", () => {
   const { name, job } = userInfo.getUserInfo();
