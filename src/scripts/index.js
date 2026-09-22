@@ -62,19 +62,24 @@ const editFormPopup = new PopupWithForm(handleProfileFormSubmit, "#edit-popup");
 editFormPopup.setEventListeners();
 
 function handleCardFormSubmit(data) {
-  const card = new Card(
-    { name: data["place-name"], link: data.link },
-    "#card-template",
-    handleCardClick,
-    confirmDelete,
-    handleLikeClick,
-  );
-  const cardElement = card.generateCard();
-  cardSection.addItem(cardElement);
-  newCardPopup.close();
-  api.addNewCard(card._name, card._link).catch((err) => {
-    console.log(err);
-  });
+  api
+    .addNewCard(data["place-name"], data["link"])
+    .then((newCard) => {
+      const card = new Card(
+        newCard, // já vem com _id, isLiked, owner, etc.
+        "#card-template",
+        handleCardClick,
+        confirmDelete,
+        handleLikeClick,
+        deleteCard, // faltava esse
+      );
+      const cardElement = card.generateCard();
+      cardSection.addItem(cardElement);
+      newCardPopup.close();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 const newCardPopup = new PopupWithForm(handleCardFormSubmit, "#new-card-popup");
@@ -113,15 +118,11 @@ function handleCardClick(data) {
 }
 
 function handleLikeClick(id, isLiked) {
-  api.changeLike(id, isLiked).catch((err) => {
-    console.log(err);
-  });
+  return api.changeLike(id, isLiked);
 }
 
 function deleteCard(id) {
-  api.deleteCard(id).catch((err) => {
-    console.log(err);
-  });
+  return api.deleteCard(id);
 }
 
 function createCard(item) {

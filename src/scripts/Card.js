@@ -23,20 +23,12 @@ export default class Card {
       .querySelector(this._templateSelector)
       .content.querySelector(".card")
       .cloneNode(true);
-    const likeBtn = element.querySelector(".card__like-button");
     if (this._isLiked) {
-      likeBtn.classList.add("card__like-button_is-active");
+      element
+        .querySelector(".card__like-button")
+        .classList.add("card__like-button_is-active");
     }
     return element;
-  }
-
-  _handleLike() {
-    const likeBtn = this.element.querySelector(".card__like-button");
-    likeBtn.addEventListener("click", () => {
-      likeBtn.classList.toggle("card__like-button_is-active");
-      this.callback(this._id, this._isLiked);
-      this._isLiked = !this._isLiked;
-    });
   }
 
   _handleOpenImage() {
@@ -46,12 +38,31 @@ export default class Card {
     });
   }
 
+  _handleLike() {
+    this._likeButton = this.element.querySelector(".card__like-button");
+    this._likeButton.addEventListener("click", () => {
+      this.callback(this._id, this._isLiked)
+        .then(() => {
+          this._likeButton.classList.toggle("card__like-button_is-active");
+          this._isLiked = !this._isLiked;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+  }
+
   _handleDelete() {
     const deleteBtn = this.element.querySelector(".card__delete-button");
     deleteBtn.addEventListener("click", () => {
       this.deleteConfirmation.open(() => {
-        this.element.remove();
-        this.deleteCard(this._id);
+        this.deleteCard(this._id)
+          .then(() => {
+            this.element.remove();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       });
     });
   }
@@ -61,9 +72,9 @@ export default class Card {
     this.element.querySelector(".card__title").textContent = this._name;
     this.element.querySelector(".card__image").src = this._link;
 
-    this._handleLike();
     this._handleOpenImage();
     this._handleDelete();
+    this._handleLike();
     return this.element;
   }
 }
